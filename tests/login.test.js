@@ -2,8 +2,11 @@ import http from 'k6/http'; //faz requisições
 import { sleep, check } from 'k6'; //função para esperar por alguns segundos
 
 export const options = { //criar constante já exportando
-    vus: 10, //usuários virtuais
-    duration: '30s',
+    stages: [
+        { duration: '5s', target: 10 }, //durante Xs, coloque Y usuários virtuais para executar meu teste
+        { duration: '20s', target: 10 }, //nos próximos Xs, Y usuários virtuais
+        { duration: '5s', target: 0 }
+    ],
     thresholds: { //falha o teste se não for validado
         http_req_duration: ['p(90)<3000', 'max<5000'], //duração da requisão - percentil de noventa (90%) deve ter tempo de duração < 3000 e a requisição com maior tempo deve ser < 5000  
         http_req_failed: ['rate<0.01'] //quantidade de requisições falhas (erros)
