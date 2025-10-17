@@ -1,5 +1,6 @@
 import http from 'k6/http'; //faz requisições
 import { sleep, check } from 'k6'; //função para esperar por alguns segundos
+import { pegarBaseURL } from '../utils/variaveis.js';
 const postLogin = JSON.parse(open('../fixtures/postLogin.json'))
 
 export const options = { //criar constante já exportando
@@ -15,10 +16,9 @@ export const options = { //criar constante já exportando
 };
 
 export default function () { //exporta teste (tem 1 por arquivo)
-  const url = 'http://localhost:3000/login';
+  const url = pegarBaseURL() + '/login';
   
   postLogin.username = "junior.lima"
-  console.log(postLogin)
   const payload = JSON.stringify(postLogin);
 
   const params = {
